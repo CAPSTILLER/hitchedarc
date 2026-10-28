@@ -35,7 +35,7 @@ async function handler(req, res, fetchImpl = globalThis.fetch) {
 
   const photos = (Array.isArray(b.photos) ? b.photos : []).slice(0, 3)
     .filter(p => p && /^image\//.test(p.type) && typeof p.data === 'string');
-  if (photos.reduce((a, p) => a + p.data.length * 0.75, 0) > 4.2e6) return send(413, { error: 'Photos are too big (4 MB total max).' });
+  if (photos.reduce((a, p) => a + p.data.length * 0.75, 0) > 3.2e6) return send(413, { error: 'Photos are too big (3 MB total max).' });
 
   const { RESEND_API_KEY, RESEND_FROM, QUOTE_TO_EMAIL, ALERT_SMS_EMAIL } = process.env;
   if (!RESEND_API_KEY || !RESEND_FROM || !QUOTE_TO_EMAIL)

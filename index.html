@@ -52,7 +52,7 @@ footer{padding:26px 0;color:#999;border-top:1px solid #333;font-size:.9rem}
 <div><label>Phone (optional)</label><input name="phone" type="tel" maxlength="30"></div>
 <div><label>Job type *</label><select name="job" required><option value="">Choose one</option><option>Lowboy front-end rebuild</option><option>Kingpin replacement</option><option>Liftgate install</option><option>Trailer repair / structural welding</option><option>Axle / suspension / hitch work</option><option>Custom fabrication</option><option>Other welding</option></select></div>
 <div><label>Describe the job *</label><textarea name="desc" rows="5" required maxlength="3000" placeholder="Trailer make/model, what's damaged, timeline..."></textarea></div>
-<div><label>Photos (optional, up to 3, 4 MB total)</label><input name="photos" type="file" accept="image/*" multiple></div>
+<div><label>Photos (optional, up to 3, 3 MB total)</label><input name="photos" type="file" accept="image/*" multiple></div>
 <div class="row"><label><input type="radio" name="where" value="Shop" checked style="width:auto"> Bring to shop</label><label><input type="radio" name="where" value="Mobile" style="width:auto"> Mobile</label></div>
 <input class="hp" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
 <button class="btn" type="submit">Send Quote Request</button><div id="msg" role="status"></div>
@@ -66,7 +66,7 @@ if(!GALLERY.length)g.innerHTML='<div class="ph">Photos coming soon.</div>';
 else GALLERY.forEach(p=>{const f=document.createElement('figure');f.innerHTML='<img loading="lazy" alt=""><figcaption></figcaption>';f.querySelector('img').src=p.src;f.querySelector('img').alt=p.caption||'';f.querySelector('figcaption').textContent=p.caption||'';g.appendChild(f)});
 const fileToB64=f=>new Promise((r,j)=>{const x=new FileReader();x.onload=()=>r({name:f.name,type:f.type,data:x.result.split(',')[1]});x.onerror=j;x.readAsDataURL(f)});
 qf.onsubmit=async e=>{e.preventDefault();const fd=new FormData(qf),files=[...qf.photos.files].slice(0,3);
-if(files.reduce((a,f)=>a+f.size,0)>4e6){msg.textContent='Photos are too big. Keep them under 4 MB total.';return}
+if(files.reduce((a,f)=>a+f.size,0)>3e6){msg.textContent='Photos are too big. Keep them under 3 MB total.';return}
 msg.textContent='Sending...';const body=Object.fromEntries([...fd].filter(([k])=>k!=='photos'));body.photos=await Promise.all(files.map(fileToB64));
 try{const r=await fetch('/api/quote',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});const j=await r.json();
 if(r.ok){msg.textContent='Thanks! Your request was sent. Expect a reply by email.';qf.reset()}else throw new Error(j.error)}
